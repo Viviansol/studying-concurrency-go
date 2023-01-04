@@ -5,6 +5,7 @@ import (
 	"sync"
 )
 
+// use go run - race.
 var msg string
 var wg sync.WaitGroup
 

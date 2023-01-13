@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func shout(ping, pong chan string) {
+func shout(ping <-chan string, pong chan<- string) {
 	for {
 		s := <-ping
 		pong <- fmt.Sprintf("%s!!!", strings.ToUpper(s))

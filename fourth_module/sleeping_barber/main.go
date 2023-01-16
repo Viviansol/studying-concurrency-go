@@ -40,10 +40,33 @@ func main() {
 
 	// add barbers
 
+	shop.addBarber("Frank")
+
 	// start the barber shop as a go routine
+	shopClosing := make(chan bool)
+	closed := make(chan bool)
+	go func() {
+		<-time.After(timeOpen)
+		shopClosing <- true
+		shop.closeShopForDay()
+		closed <- true
+	}()
 
 	//add clients
 
-	// block until the barber shop is closed
+	i := 1
+	go func() {
+		for {
+			randmMillseconds := rand.Int() % (2 * arrivalRate)
+			select {
+			case <-shopClosing:
+				return
+			case <-time.After(time.Millisecond * time.Duration(randmMillseconds)):
 
+			}
+		}
+	}()
+
+	// block until the barber shop is closed
+	time.Sleep(5 * time.Second)
 }

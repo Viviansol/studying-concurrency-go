@@ -1,13 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"github.com/fatih/color"
 	"math/rand"
 	"time"
 )
 
 // variables
-var seatingCapacity = 10
+var seatingCapacity = 30
 var arrivalRate = 100
 var cutDuration = 1000 * time.Millisecond
 var timeOpen = 10 * time.Second
@@ -41,6 +42,11 @@ func main() {
 	// add barbers
 
 	shop.addBarber("Frank")
+	shop.addBarber("genaro")
+	shop.addBarber("ana")
+	shop.addBarber("filipe")
+	shop.addBarber("anderson")
+	shop.addBarber("nath")
 
 	// start the barber shop as a go routine
 	shopClosing := make(chan bool)
@@ -62,11 +68,12 @@ func main() {
 			case <-shopClosing:
 				return
 			case <-time.After(time.Millisecond * time.Duration(randmMillseconds)):
-
+				shop.addClient(fmt.Sprintf("Client %d", i))
+				i++
 			}
 		}
 	}()
 
 	// block until the barber shop is closed
-	time.Sleep(5 * time.Second)
+	<-closed
 }
